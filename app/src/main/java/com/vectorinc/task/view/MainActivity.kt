@@ -1,10 +1,12 @@
 package com.vectorinc.task.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -15,7 +17,7 @@ import com.vectorinc.task.R
 import com.vectorinc.task.adapter.RecyclerviewAdapter
 import com.vectorinc.task.databinding.ActivityMainBinding
 import com.vectorinc.task.domain.model.Character
-import com.vectorinc.task.viewmodel.CharacterState
+import com.vectorinc.task.viewmodel.CharacterStateSucess
 import com.vectorinc.task.viewmodel.MainActivityEvents
 import com.vectorinc.task.viewmodel.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,7 +28,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     private lateinit var viewModel: MainActivityViewModel
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: RecyclerviewAdapter
-    private lateinit var toolbar : Toolbar
+    private lateinit var toolbar: Toolbar
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,24 +38,26 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         setContentView(binding.root)
         setSupportActionBar(toolbar)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.progressBar.isVisible = true
         initViewModel()
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { uiState ->
                     when (uiState) {
-                        is CharacterState.Error -> TODO()
-                        is CharacterState.Success -> {
-                            showList(uiState.character, binding.recyclerView)
-                        }
+                        is CharacterStateSucess.Success -> showList(
+                            uiState.character,
+                            binding.recyclerView
+                        )
                     }
                 }
+
             }
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.search_menu,menu)
+        menuInflater.inflate(R.menu.search_menu, menu)
         super.onCreateOptionsMenu(menu)
         val search = menu.findItem(R.id.search)
         val searchView = search?.actionView as? SearchView
@@ -67,7 +71,16 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     }
 
     private fun showList(list: List<Character>, recyclerView: RecyclerView) {
-        adapter = RecyclerviewAdapter(list,this)
+        adapter = RecyclerviewAdapter(list, this)
+
+        if (list.isNotEmpty()){
+            binding.progressBar.isVisible = false
+            binding.resultTxt.isVisible = false
+        }else {
+            binding.resultTxt.isVisible = true
+        }
+
+
         recyclerView.adapter = adapter
         adapter.notifyDataSetChanged()
     }
@@ -78,7 +91,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     override fun onQueryTextChange(newText: String?): Boolean {
         viewModel.onEvent(
-            MainActivityEvents.OnSearchQueryChange(newText ?: "")
+            MainActivityEvents.OnSearchQueryChange(newText!!)
         )
 
         return true

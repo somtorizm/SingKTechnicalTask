@@ -13,18 +13,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
     private val repository: CharacterRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(CharacterState.Success(emptyList()))
-    val uiState: StateFlow<CharacterState> = _uiState
-
-    private val _query = MutableStateFlow(CharacterState.Query(""))
-    val query: StateFlow<CharacterState> = _query
-
+    private val _uiState = MutableStateFlow(CharacterStateSucess.Success(emptyList()))
+    val uiState: StateFlow<CharacterStateSucess> = _uiState
 
 
 
@@ -34,37 +29,38 @@ class MainActivityViewModel @Inject constructor(
     }
 
 
-    fun loadData(query : String) {
+    fun loadData(query: String) {
         viewModelScope.launch {
-            repository.getCharacter(query).collect(){ state->
-                when(state){
+            repository.getCharacter(query).collect() { result ->
+                when (result) {
                     is Resource.Error -> {
-                        //TODO Handle Error
+
                     }
                     is Resource.Success -> {
-                           _uiState.value = CharacterState.Success(state.data ?: emptyList())
+                        result.data?.let { characters ->
+                            _uiState.value = CharacterStateSucess.Success(characters)
+                        }
+
                     }
-                    is Resource.isLoading -> {
-                        //TODO Handle Loading
+                    is Resource.Loading -> {
+
+
                     }
                 }
             }
         }
     }
 
-    fun onEvent(event: MainActivityEvents){
-        when(event){
+    fun onEvent(event: MainActivityEvents) {
+        when (event) {
             is MainActivityEvents.OnSearchQueryChange -> {
-                Log.d("Query", event.query.toString())
                 loadData(event.query)
             }
         }
     }
 
 }
-sealed class CharacterState {
-    data class Success(var character: List<Character>): CharacterState()
-    data class Error(val exception: Throwable): CharacterState()
-    data class Query(var query: String): CharacterState()
-    data class Loading(var loadingState: Boolean?= false): CharacterState()
+
+sealed class CharacterStateSucess {
+    data class Success(var character: List<Character>) : CharacterStateSucess()
 }
