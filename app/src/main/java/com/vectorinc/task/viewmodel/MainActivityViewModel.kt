@@ -22,15 +22,21 @@ class MainActivityViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(CharacterState.Success(emptyList()))
     val uiState: StateFlow<CharacterState> = _uiState
 
+    private val _query = MutableStateFlow(CharacterState.Query(""))
+    val query: StateFlow<CharacterState> = _query
+
+
+
+
     init {
 
-        loadData()
+        loadData("")
     }
 
 
-    fun loadData() {
+    fun loadData(query : String) {
         viewModelScope.launch {
-            repository.getCharacter().collect(){ state->
+            repository.getCharacter(query).collect(){ state->
                 when(state){
                     is Resource.Error -> {
                         //TODO Handle Error
@@ -45,9 +51,20 @@ class MainActivityViewModel @Inject constructor(
             }
         }
     }
+
+    fun onEvent(event: MainActivityEvents){
+        when(event){
+            is MainActivityEvents.OnSearchQueryChange -> {
+                Log.d("Query", event.query.toString())
+                loadData(event.query)
+            }
+        }
+    }
+
 }
 sealed class CharacterState {
     data class Success(var character: List<Character>): CharacterState()
     data class Error(val exception: Throwable): CharacterState()
+    data class Query(var query: String): CharacterState()
     data class Loading(var loadingState: Boolean?= false): CharacterState()
 }

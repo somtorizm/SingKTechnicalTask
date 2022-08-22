@@ -16,6 +16,7 @@ import com.vectorinc.task.adapter.RecyclerviewAdapter
 import com.vectorinc.task.databinding.ActivityMainBinding
 import com.vectorinc.task.domain.model.Character
 import com.vectorinc.task.viewmodel.CharacterState
+import com.vectorinc.task.viewmodel.MainActivityEvents
 import com.vectorinc.task.viewmodel.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -63,7 +64,6 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     private fun initViewModel() {
 
         viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
-        viewModel.loadData()
     }
 
     private fun showList(list: List<Character>, recyclerView: RecyclerView) {
@@ -73,11 +73,15 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-        TODO("Not yet implemented")
+        return true
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        TODO("Not yet implemented")
+        viewModel.onEvent(
+            MainActivityEvents.OnSearchQueryChange(newText ?: "")
+        )
+
+        return true
 
     }
 }

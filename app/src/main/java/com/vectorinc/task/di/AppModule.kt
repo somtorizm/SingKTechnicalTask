@@ -1,6 +1,9 @@
 package com.vectorinc.task.di
 
 
+import android.app.Application
+import androidx.room.Room
+import com.vectorinc.task.data.local.Database
 import com.vectorinc.task.data.remote.ApiService
 import com.vectorinc.task.utils.Constants
 import dagger.Module
@@ -27,6 +30,16 @@ object AppModule {
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create()
+    }
+
+    @Provides
+    @Singleton
+    fun provideStockDatabase(app: Application): Database {
+        return Room.databaseBuilder(
+            app,
+            Database::class.java,
+            "characters.db",
+        ).build()
     }
 
 
