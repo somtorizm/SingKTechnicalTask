@@ -13,41 +13,54 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
     private val repository: CharacterRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(CharacterState.Success(emptyList()))
-    val uiState: StateFlow<CharacterState> = _uiState
+    private val _uiState = MutableStateFlow(CharacterStateSucess.Success(emptyList()))
+    val uiState: StateFlow<CharacterStateSucess> = _uiState
+
+
 
     init {
 
-        loadData()
+        loadData("")
     }
 
 
-    fun loadData() {
+    fun loadData(query: String) {
         viewModelScope.launch {
-            repository.getCharacter().collect(){ state->
-                when(state){
+            repository.getCharacter(query).collect() { result ->
+                when (result) {
                     is Resource.Error -> {
-                        //TODO Handle Error
+
                     }
                     is Resource.Success -> {
-                           _uiState.value = CharacterState.Success(state.data ?: emptyList())
+                        result.data?.let { characters ->
+                            _uiState.value = CharacterStateSucess.Success(characters)
+                        }
+
                     }
-                    is Resource.isLoading -> {
-                        //TODO Handle Loading
+                    is Resource.Loading -> {
+
+
                     }
                 }
             }
         }
     }
+
+    fun onEvent(event: MainActivityEvents) {
+        when (event) {
+            is MainActivityEvents.OnSearchQueryChange -> {
+                loadData(event.query)
+            }
+        }
+    }
+
 }
-sealed class CharacterState {
-    data class Success(var character: List<Character>): CharacterState()
-    data class Error(val exception: Throwable): CharacterState()
-    data class Loading(var loadingState: Boolean?= false): CharacterState()
+
+sealed class CharacterStateSucess {
+    data class Success(var character: List<Character>) : CharacterStateSucess()
 }

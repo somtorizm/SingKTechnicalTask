@@ -6,6 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface CharacterRepository {
 
-    suspend fun getCharacter(): Flow<Resource<List<Character>>>
+    suspend fun getCharacter(query : String): Flow<Resource<List<Character>>>
 
 }
