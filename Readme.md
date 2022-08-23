@@ -28,12 +28,14 @@ A simple page based on modern Android tech-stacks and MVVM architecture. Fetchin
     for asynchronous.
 - Hilt for dependency injection.
 - AndroidX
-    - Lifecycle - dispose observing data when lifecycle state changes.
-    - ViewModel - UI related data holder, lifecycle aware.
-    - Cache - Room database.
-    - App Startup - Provides a straightforward, performant way to initialize components at
-      application startup.
+  - Lifecycle - dispose observing data when lifecycle state changes.
+  - ViewModel - UI related data holder, lifecycle aware.
+  - Cache - Room database.
+  - App Startup - Provides a straightforward, performant way to initialize components at application
+    startup.
 - Architecture
-    - MVVM Architecture (Declarative View - ViewModel - Model)
-    - Repository pattern
+  - MVVM Architecture (Declarative View - ViewModel - Model)
+  - Repository pattern
 - Material Design & Animations
+
+## [Download Apk] (https://drive.google.com/file/d/1E9em4D28DRyIhBxq_hZZ5egSd_Zq_EIo/view?usp=sharing)
