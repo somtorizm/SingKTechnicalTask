@@ -63,7 +63,8 @@ class CharacterDaoTest {
 
     @Test
     fun readCharacter() = runBlocking {
-        dao.insertCharacterList(fakeItems)
+
+    dao.insertCharacterList(fakeItems)
         val expectedNameAtIndex = "Hector1"
         val actualName = dao.readCharactersList("He")[0].name
         assertNotNull(actualName)

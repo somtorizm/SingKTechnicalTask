@@ -44,10 +44,11 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { uiState ->
                     when (uiState) {
-                        is CharacterState.Success -> showList(
-                            uiState.character,
-                            binding.recyclerView
-                        )
+                        is CharacterState.Success ->
+                            showList(
+                                uiState.character,
+                                binding.recyclerView
+                            )
                     }
                 }
 
