@@ -11,10 +11,10 @@ A simple page based on modern Android tech-stacks and MVVM architecture. Fetchin
 ## Screenshots
 
 <p align="center">
-<img src="https://i.postimg.cc/vMvSQ9rT/app-mockup-ios-screenshot-1-default-6-5-inch-1.png" width="270"/>
-<img src="https://i.postimg.cc/mTNCy4gx/app-mockup-ios-screenshot-1-default-6-5-inch-3.png" width="270"/>
+<img src="https://i.postimg.cc/vTBtxYC6/1661241298958.jpg" width="270"/>
+<img src="https://i.postimg.cc/52Ms9CfX/1661241309781.jpg" width="270"/>
 </br>
-<img src="https://i.postimg.cc/2CBXkVGQ/app-mockup-ios-screenshot-1-default-6-5-inch-2.png" width="270"/>
+<img src="https://i.postimg.cc/pL2K1Y2J/Task.gif" width="270"/>
 </p>
 
 ## Tech stack & Open-source libraries
