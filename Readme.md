@@ -14,8 +14,10 @@ A simple page based on modern Android tech-stacks and MVVM architecture. Fetchin
 <img src="https://i.postimg.cc/vTBtxYC6/1661241298958.jpg" width="270"/>
 <img src="https://i.postimg.cc/52Ms9CfX/1661241309781.jpg" width="270"/>
 </br>
-<video src="https://streamable.com/4m5se1" width=180/>
+
 </p>
+
+## [Video] (https://streamable.com/4m5se1)
 
 ## Tech stack & Open-source libraries
 
@@ -23,7 +25,7 @@ A simple page based on modern Android tech-stacks and MVVM architecture. Fetchin
 - 100% [Kotlin](https://kotlinlang.org/) based
   + [Coroutines](https://github.com/Kotlin/kotlinx.coroutines)
   + [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/)
-  for asynchronous.
+    for asynchronous.
 - Hilt for dependency injection.
 - AndroidX
     - Lifecycle - dispose observing data when lifecycle state changes.
