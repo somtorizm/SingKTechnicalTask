@@ -14,7 +14,7 @@ A simple page based on modern Android tech-stacks and MVVM architecture. Fetchin
 <img src="https://i.postimg.cc/vTBtxYC6/1661241298958.jpg" width="270"/>
 <img src="https://i.postimg.cc/52Ms9CfX/1661241309781.jpg" width="270"/>
 </br>
-<img src="https://i.postimg.cc/pL2K1Y2J/Task.gif" width="500"/>
+<video src='https://streamable.com/4m5se1' width=180/>
 </p>
 
 ## Tech stack & Open-source libraries
