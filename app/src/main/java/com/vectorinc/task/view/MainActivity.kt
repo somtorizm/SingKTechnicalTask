@@ -1,7 +1,6 @@
 package com.vectorinc.task.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -17,7 +16,7 @@ import com.vectorinc.task.R
 import com.vectorinc.task.adapter.RecyclerviewAdapter
 import com.vectorinc.task.databinding.ActivityMainBinding
 import com.vectorinc.task.domain.model.Character
-import com.vectorinc.task.viewmodel.CharacterStateSucess
+import com.vectorinc.task.viewmodel.CharacterState
 import com.vectorinc.task.viewmodel.MainActivityEvents
 import com.vectorinc.task.viewmodel.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,7 +44,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { uiState ->
                     when (uiState) {
-                        is CharacterStateSucess.Success -> showList(
+                        is CharacterState.Success -> showList(
                             uiState.character,
                             binding.recyclerView
                         )

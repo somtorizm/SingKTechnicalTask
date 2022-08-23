@@ -1,10 +1,10 @@
 package com.vectorinc.task.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vectorinc.task.domain.model.Character
 import com.vectorinc.task.domain.repository.CharacterRepository
+import com.vectorinc.task.utils.DispatchersProvider
 import com.vectorinc.task.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,11 +15,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
-    private val repository: CharacterRepository
+    private val repository: CharacterRepository,
+    private val dispatchers: DispatchersProvider
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(CharacterStateSucess.Success(emptyList()))
-    val uiState: StateFlow<CharacterStateSucess> = _uiState
+    private val _uiState = MutableStateFlow(CharacterState.Success(emptyList()))
+    val uiState: StateFlow<CharacterState> = _uiState
+
+    private val _size = MutableStateFlow(0)
+    val size: StateFlow<Int> = _size
+
 
 
 
@@ -30,15 +35,15 @@ class MainActivityViewModel @Inject constructor(
 
 
     fun loadData(query: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatchers.main) {
             repository.getCharacter(query).collect() { result ->
                 when (result) {
                     is Resource.Error -> {
-
                     }
                     is Resource.Success -> {
                         result.data?.let { characters ->
-                            _uiState.value = CharacterStateSucess.Success(characters)
+                            _size.value = characters.size
+                            _uiState.value = CharacterState.Success(characters)
                         }
 
                     }
@@ -59,8 +64,13 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
+    fun listSize() : Int{
+        return _size.value
+    }
+
 }
 
-sealed class CharacterStateSucess {
-    data class Success(var character: List<Character>) : CharacterStateSucess()
+sealed class CharacterState {
+    data class Success(var character: List<Character>) : CharacterState()
+
 }
