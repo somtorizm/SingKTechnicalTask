@@ -38,5 +38,6 @@ A simple page based on modern Android tech-stacks and MVVM architecture. Fetchin
   - Repository pattern
 - Material Design & Animations
 
+victor/readme
 ## [Download Apk] (https://github.com/somtorizm/SingKTechnicalTask/raw/victor/app-apk/app/release/task.apk)
-
+ master
