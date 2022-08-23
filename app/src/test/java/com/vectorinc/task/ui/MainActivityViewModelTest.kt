@@ -1,7 +1,9 @@
-package com.vectorinc.task.util
+package com.vectorinc.task.ui
 
 import app.cash.turbine.test
 import com.vectorinc.task.domain.model.Character
+import com.vectorinc.task.repository.FakeRepository
+import com.vectorinc.task.util.TestDispatchers
 import com.vectorinc.task.utils.Constants
 import com.vectorinc.task.viewmodel.CharacterState
 import com.vectorinc.task.viewmodel.MainActivityViewModel
@@ -13,7 +15,7 @@ import org.junit.Test
 
 class MainActivityViewModelTest {
 
-    lateinit var repository: CharacterTestRepository
+    lateinit var repository: FakeRepository
     lateinit var viewModel: MainActivityViewModel
     lateinit var testDispatchers: TestDispatchers
     lateinit var fakeItems: ArrayList<Character>
@@ -21,7 +23,7 @@ class MainActivityViewModelTest {
 
     @Before
     fun setup() {
-        fakeItems = ArrayList<Character>()
+        fakeItems = ArrayList()
         testDispatchers = TestDispatchers()
 
         var characters = Character(name = "Victor", img = "https://www.google.com")
@@ -32,13 +34,13 @@ class MainActivityViewModelTest {
         fakeItems.add(characters)
         characters = Character(name = "Somito", img = "https://www.google.comx")
         fakeItems.add(characters)
-        repository = CharacterTestRepository(fakeItems)
+        repository = FakeRepository(fakeItems)
         viewModel = MainActivityViewModel(repository, testDispatchers)
 
     }
 
     @Test
-    fun `base url test`(){
+    fun `base url test`() {
         val expected = "https://breakingbadapi.com/"
         val actual = Constants.BASE_URL
 
@@ -60,7 +62,8 @@ class MainActivityViewModelTest {
     @Test
     fun `test emit success values from the view model state`() = runBlocking {
         val job = launch {
-            viewModel.loadData("")
+
+        viewModel.loadData("")
             viewModel.uiState.test {
                 val emission = awaitItem()
                 assertEquals(emission, CharacterState.Success(fakeItems))
@@ -70,12 +73,6 @@ class MainActivityViewModelTest {
         job.join()
         job.cancel()
     }
-
-
-
-
-
-
 
 
 }
